@@ -1,0 +1,12 @@
+{
+  "name": "RedLine Debugging Bridge",
+  "short_name": "RedLine",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#101214",
+  "theme_color": "#101214",
+  "description": "A phone-only debugging bridge for developers.",
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

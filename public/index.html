@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f3f0e9">
+  <meta name="description" content="RedLine is a phone-only debugging bridge for developers.">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/app.css">
+  <title>RedLine | Phone Debugging Bridge</title>
+</head>
+<body>
+  <main class="stage">
+    <section class="phone" aria-label="RedLine mobile app preview">
+      <div class="phone-top"><span class="camera-dot"></span><span>9:41</span><span class="status-icons">▮▮▮　▰</span></div>
+      <header class="app-header">
+        <div class="brand"><span class="brand-mark">R</span><span><strong>RedLine</strong><small>DEBUG WITHOUT THE DESKTOP</small></span></div>
+        <button class="icon-button" id="installButton" type="button" aria-label="Install RedLine" title="Install RedLine">＋</button>
+      </header>
+
+      <div class="app-scroll">
+        <section class="welcome">
+          <p class="eyebrow">YOUR POCKET DEBUGGER</p>
+          <h1>Turn the red light<br><em>green.</em></h1>
+          <p>Capture an error, understand what happened, and leave with a focused fix.</p>
+          <div class="mode-pill"><span class="pulse"></span><span id="connectionLabel">Cloud connection</span><span class="mode-separator">·</span><span id="aiLabel">Cloud AI</span></div>
+        </section>
+
+        <div class="tabs" role="tablist" aria-label="RedLine tools">
+          <button class="tab active" data-view="voice" role="tab" aria-selected="true">Generate code</button>
+          <button class="tab" data-view="analyze" role="tab" aria-selected="false">Debug</button>
+          <button class="tab" data-view="history" role="tab">History</button>
+        </div>
+
+        <section class="view" id="analyzeView" role="tabpanel" hidden>
+          <div class="section-heading"><span class="step-number">01</span><div><h2>What went wrong?</h2><p>Paste an error or photograph your screen.</p></div></div>
+          <label class="field-label" for="errorText">Error message</label>
+          <div class="voice-input-wrap">
+            <textarea id="errorText" rows="5" placeholder="Paste the error you see...">java.lang.NullPointerException
+at com.example.MainActivity.onCreate(MainActivity.java:42)</textarea>
+            <button class="mic-button" id="debugMicButton" type="button" aria-label="Start voice input for error" title="Speak error details"><span>●</span></button>
+          </div>
+          <p class="voice-status" id="debugVoiceStatus" role="status">Type, photograph, or speak the error.</p>
+          <div class="field-row">
+            <label class="select-wrap"><span>Explain in</span><select id="responseLanguage"><option>English</option><option>Hindi</option><option>Tamil</option><option>Telugu</option></select></label>
+            <label class="select-wrap"><span>Speak in</span><select id="debugVoiceLanguage"><option>English</option><option>Hindi</option></select></label>
+            <button class="camera-action" id="photoButton" type="button"><span>⌁</span> Photo</button>
+            <input id="photoInput" type="file" accept="image/*" capture="environment" hidden>
+          </div>
+          <button class="primary-button" id="analyzeButton" type="button"><span>Analyze error</span><span>→</span></button>
+          <div class="result-panel" id="analyzeResult" hidden></div>
+        </section>
+
+        <section class="view active" id="voiceView" role="tabpanel">
+          <div class="section-heading"><span class="step-number">02</span><div><h2>Describe your logic</h2><p>Say what the function should do.</p></div></div>
+          <label class="field-label" for="voiceText">Your idea</label>
+          <div class="voice-input-wrap">
+            <textarea id="voiceText" rows="5" placeholder="Tap the microphone and describe your function...">Create a function that removes empty strings from a list</textarea>
+            <button class="mic-button" id="micButton" type="button" aria-label="Start voice input" title="Start voice input"><span>●</span></button>
+          </div>
+          <p class="voice-status" id="voiceStatus" role="status">Tap the microphone to speak, or type your idea.</p>
+          <div class="field-row voice-tools">
+            <label class="select-wrap"><span>Speak in</span><select id="voiceInputLanguage"><option value="en-IN">English</option><option value="hi-IN">Hindi</option></select></label>
+            <button class="camera-action" id="generatePhotoButton" type="button"><span>⌁</span> Photo</button>
+            <input id="generatePhotoInput" type="file" accept="image/*" capture="environment" hidden>
+          </div>
+          <label class="select-wrap full"><span>Generate in</span><select id="codeLanguage"><option>JavaScript</option><option>Python</option><option>Java</option><option>Kotlin</option><option>Swift</option><option>TypeScript</option><option>C#</option><option>Go</option><option>Rust</option><option>C++</option><option>PHP</option><option>Ruby</option></select></label>
+          <button class="primary-button" id="generateButton" type="button"><span>Generate code</span><span>→</span></button>
+          <div class="result-panel" id="voiceResult" hidden></div>
+        </section>
+
+        <section class="view" id="historyView" role="tabpanel" hidden>
+          <div class="section-heading"><span class="step-number">03</span><div><h2>Recent sessions</h2><p>Your work stays on this device.</p></div></div>
+          <div id="historyList" class="history-list"><div class="empty-state">No saved sessions yet.<br>Analyze an error to start your history.</div></div>
+        </section>
+      </div>
+      <nav class="bottom-nav"><span class="nav-light"></span><span>RedLine keeps your code moving</span><span class="nav-lock">⌑</span></nav>
+    </section>
+    <aside class="desktop-note"><span class="note-line"></span><p>Same problem.<br><strong>New possibilities.</strong></p><span class="note-line"></span></aside>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>
