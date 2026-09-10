@@ -4,8 +4,7 @@
 
 ### *"Debug smarter, faster, anywhere — with AI-powered explanations and voice input."*
 
-**iQOO Hackathon 2026 — City Battles, Chennai**
-*Team: Altos*
+**iQOO Hackathon 2026 — City Battles**
 
 [![Live Demo](#-live-demo--repository)](#-live-demo--repository)
 [![Tests](https://img.shields.io/badge/tests-passing-4FA694)](#-run-the-test-suite)
