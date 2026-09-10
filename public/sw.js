@@ -1,4 +1,4 @@
-const CACHE = 'redline-v5';
+const CACHE = 'redline-v6';
 const APP_SHELL = ['/', '/app.css', '/app.js', '/manifest.webmanifest'];
 
 self.addEventListener('install', (event) => event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(APP_SHELL)).then(() => self.skipWaiting())));

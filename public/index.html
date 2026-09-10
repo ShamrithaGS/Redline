@@ -44,8 +44,15 @@ at com.example.MainActivity.onCreate(MainActivity.java:42)</textarea>
           <div class="field-row">
             <label class="select-wrap"><span>Explain in</span><select id="responseLanguage"><option>English</option><option>Hindi</option><option>Tamil</option><option>Telugu</option></select></label>
             <label class="select-wrap"><span>Speak in</span><select id="debugVoiceLanguage"><option>English</option><option>Hindi</option></select></label>
-            <button class="camera-action" id="photoButton" type="button"><span>⌁</span> Photo</button>
+            <div class="camera-source-wrap">
+              <button class="camera-action" id="photoButton" type="button"><span>⌁</span> Photo</button>
+              <div class="photo-choice-menu" id="photoChoiceMenu" hidden>
+                <button type="button" class="choice-button" id="cameraPhotoButton">Take photo</button>
+                <button type="button" class="choice-button" id="uploadPhotoButton">Upload photo</button>
+              </div>
+            </div>
             <input id="photoInput" type="file" accept="image/*" capture="environment" hidden>
+            <input id="uploadPhotoInput" type="file" accept="image/*" hidden>
           </div>
           <button class="primary-button" id="analyzeButton" type="button"><span>Analyze error</span><span>→</span></button>
           <div class="result-panel" id="analyzeResult" hidden></div>
@@ -61,8 +68,15 @@ at com.example.MainActivity.onCreate(MainActivity.java:42)</textarea>
           <p class="voice-status" id="voiceStatus" role="status">Tap the microphone to speak, or type your idea.</p>
           <div class="field-row voice-tools">
             <label class="select-wrap"><span>Speak in</span><select id="voiceInputLanguage"><option value="en-IN">English</option><option value="hi-IN">Hindi</option></select></label>
-            <button class="camera-action" id="generatePhotoButton" type="button"><span>⌁</span> Photo</button>
+            <div class="camera-source-wrap">
+              <button class="camera-action" id="generatePhotoButton" type="button"><span>⌁</span> Photo</button>
+              <div class="photo-choice-menu" id="generatePhotoChoiceMenu" hidden>
+                <button type="button" class="choice-button" id="cameraGeneratePhotoButton">Take photo</button>
+                <button type="button" class="choice-button" id="uploadGeneratePhotoButton">Upload photo</button>
+              </div>
+            </div>
             <input id="generatePhotoInput" type="file" accept="image/*" capture="environment" hidden>
+            <input id="generateUploadPhotoInput" type="file" accept="image/*" hidden>
           </div>
           <label class="select-wrap full"><span>Generate in</span><select id="codeLanguage"><option>JavaScript</option><option>Python</option><option>Java</option><option>Kotlin</option><option>Swift</option><option>TypeScript</option><option>C#</option><option>Go</option><option>Rust</option><option>C++</option><option>PHP</option><option>Ruby</option></select></label>
           <button class="primary-button" id="generateButton" type="button"><span>Generate code</span><span>→</span></button>

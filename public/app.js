@@ -157,7 +157,52 @@ document.querySelectorAll('.tab').forEach((tab) => tab.addEventListener('click',
   document.querySelectorAll('.view').forEach((view) => { view.hidden = view.id !== `${tab.dataset.view}View`; view.classList.toggle('active', !view.hidden); });
 }));
 
-$('#photoButton').addEventListener('click', () => $('#photoInput').click());
+function setPhotoChoiceMenuState(menuId, visible) {
+  const menu = document.getElementById(menuId);
+  if (menu) menu.hidden = !visible;
+}
+
+setPhotoChoiceMenuState('photoChoiceMenu', false);
+setPhotoChoiceMenuState('generatePhotoChoiceMenu', false);
+
+function bindPhotoChoice(buttonId, menuId, cameraChoiceButtonId, uploadChoiceButtonId, cameraInputId, uploadInputId) {
+  const photoButton = document.getElementById(buttonId);
+  const menu = document.getElementById(menuId);
+  const cameraChoiceButton = document.getElementById(cameraChoiceButtonId);
+  const uploadChoiceButton = document.getElementById(uploadChoiceButtonId);
+  const cameraInput = document.getElementById(cameraInputId);
+  const uploadInput = document.getElementById(uploadInputId);
+
+  if (!photoButton || !menu || !cameraChoiceButton || !uploadChoiceButton || !cameraInput || !uploadInput) return;
+
+  const hideMenu = () => setPhotoChoiceMenuState(menuId, false);
+
+  photoButton.addEventListener('click', (event) => {
+    event.stopPropagation();
+    const isVisible = !menu.hidden;
+    setPhotoChoiceMenuState(menuId, !isVisible);
+  });
+
+  cameraChoiceButton.addEventListener('click', () => {
+    hideMenu();
+    cameraInput.click();
+  });
+
+  uploadChoiceButton.addEventListener('click', () => {
+    hideMenu();
+    uploadInput.click();
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!menu.contains(event.target) && !photoButton.contains(event.target)) {
+      hideMenu();
+    }
+  });
+}
+
+bindPhotoChoice('photoButton', 'photoChoiceMenu', 'cameraPhotoButton', 'uploadPhotoButton', 'photoInput', 'uploadPhotoInput');
+bindPhotoChoice('generatePhotoButton', 'generatePhotoChoiceMenu', 'cameraGeneratePhotoButton', 'uploadGeneratePhotoButton', 'generatePhotoInput', 'generateUploadPhotoInput');
+
 $('#photoInput').addEventListener('change', async () => {
   const file = $('#photoInput').files[0];
   if (!file) return;
@@ -182,7 +227,30 @@ $('#photoInput').addEventListener('change', async () => {
   }
 });
 
-$('#generatePhotoButton').addEventListener('click', () => $('#generatePhotoInput').click());
+$('#uploadPhotoInput').addEventListener('change', async () => {
+  const file = $('#uploadPhotoInput').files[0];
+  if (!file) return;
+  const resultPanel = $('#analyzeResult');
+  resultPanel.hidden = false;
+  resultPanel.innerHTML = '<p>Reading uploaded screenshot...</p>';
+  const formData = new FormData();
+  formData.append('image', file);
+  formData.append('language', $('#responseLanguage').value);
+  try {
+    const csrfToken = await getCsrfToken();
+    const response = await fetch('/api/capture-fix', { method: 'POST', headers: { 'X-Redline-CSRF': csrfToken }, body: formData });
+    if (!response.ok) throw new Error(await responseError(response, 'The uploaded screenshot could not be read.'));
+    const result = await response.json();
+    $('#errorText').value = result.extractedText || 'Uploaded screenshot captured. Add the visible error text for analysis.';
+    resultPanel.innerHTML = `<h3>Uploaded screenshot captured</h3><p>${escapeHtml(result.explanation || 'Ready to analyze.')}</p><pre class="code">${escapeHtml(result.fix || '')}</pre><div class="result-meta">GEMINI VISION</div>`;
+    saveHistory(file.name, 'Uploaded screenshot');
+  } catch (error) {
+    resultPanel.innerHTML = `<p>${escapeHtml(error.message)}</p>`;
+  } finally {
+    $('#uploadPhotoInput').value = '';
+  }
+});
+
 $('#generatePhotoInput').addEventListener('change', async () => {
   const file = $('#generatePhotoInput').files[0];
   if (!file) return;
@@ -203,9 +271,30 @@ $('#generatePhotoInput').addEventListener('change', async () => {
     $('#generatePhotoInput').value = '';
   }
 });
+
+$('#generateUploadPhotoInput').addEventListener('change', async () => {
+  const file = $('#generateUploadPhotoInput').files[0];
+  if (!file) return;
+  setVoiceStatus('voiceStatus', 'Reading uploaded screenshot for a code description...');
+  const formData = new FormData();
+  formData.append('image', file);
+  formData.append('language', $('#voiceInputLanguage').selectedOptions[0].textContent);
+  try {
+    const csrfToken = await getCsrfToken();
+    const response = await fetch('/api/capture-fix', { method: 'POST', headers: { 'X-Redline-CSRF': csrfToken }, body: formData });
+    if (!response.ok) throw new Error(await responseError(response, 'The uploaded screenshot could not be read.'));
+    const result = await response.json();
+    $('#voiceText').value = result.extractedText || '';
+    setVoiceStatus('voiceStatus', 'Uploaded screenshot text captured. Review it, then generate code.');
+  } catch (error) {
+    setVoiceStatus('voiceStatus', error.message || 'Screenshot reading failed. You can type the description instead.', true);
+  } finally {
+    $('#generateUploadPhotoInput').value = '';
+  }
+});
 window.addEventListener('beforeinstallprompt', (event) => { event.preventDefault(); installPrompt = event; });
 $('#installButton').addEventListener('click', async () => { if (installPrompt) { await installPrompt.prompt(); installPrompt = null; } });
 renderHistory();
 
 fetch('/api/health').then((response) => response.json()).then((health) => { $('#aiLabel').textContent = health.ai === 'cloud' ? 'Cloud AI' : 'Cloud unavailable'; $('#connectionLabel').textContent = health.onlineMode ? 'Connected' : 'Needs configuration'; }).catch(() => { $('#connectionLabel').textContent = 'Connection unavailable'; });
-if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+// Service worker registration is disabled for localhost so the latest frontend updates are always loaded immediately.
