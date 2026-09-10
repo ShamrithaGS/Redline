@@ -19,9 +19,9 @@
 
 **RedLine** is a mobile-first debugging assistant that turns error screenshots, error text, or spoken descriptions into AI-powered explanations and code fixes — all from your phone.
 
-No need to leave your mobile environment. Capture an error with your phone's camera, let **RedLine** extract the text via OCR, feed it to Google Gemini for reasoning, and get a human-readable explanation and a draft fix. Or describe a function in your voice, and RedLine generates code.
+No need to leave your mobile environment. Capture an error with your phone's camera, let **RedLine** extract the text via OCR, feed it to Google Gemini for reasoning, and get a human-readable explanation and code fix.
 
-Built as a Progressive Web App (PWA) that works offline-first with local OCR and voice recognition, and as a backend API service deployable anywhere. Works with the browser demo, native Android apps, or any mobile shell.
+Built as a Progressive Web App (PWA) that works offline-first with local OCR and voice recognition, and as a backend API service deployable anywhere. Works with the browser demo, native Android apps, and more.
 
 ---
 
@@ -47,8 +47,9 @@ Built as a Progressive Web App (PWA) that works offline-first with local OCR and
 
 | | | |
 |---|---|---|
-| **Live artifact** | *Deployed on iQOO Hackathon platform* |
-| **Source repository** | [github.com/ShamrithaGS/Redline](https://github.com/ShamrithaGS/Redline) |
+| **Live Demo** | [redline-zdo9.onrender.com](https://redline-zdo9.onrender.com) |
+| **Demo Video** | [Watch on Google Drive](https://drive.google.com/file/d/1DND9mu43rIhcBy3-VO5tc4oyU2OtI_Mk/view?usp=drive_link) |
+| **Source Repository** | [github.com/ShamrithaGS/Redline](https://github.com/ShamrithaGS/Redline) |
 
 ---
 
@@ -92,7 +93,7 @@ flowchart TD
 | Voice Recognition | `public/vosk-worker.js` | Web Worker running Vosk (offline STT) — transcribes audio locally without cloud dependency. |
 | Tests | `test/test.js` | Automated suite using Jest/Supertest — covers health, offline behavior, input validation, and API contracts. |
 
-**What's live vs. precomputed:** everything is live. Every request to `/api/explain-fix`, `/api/capture-fix`, or `/api/voice-to-logic` either calls Gemini (if online) or returns a deterministic offline response. No animation, no pre-rendered results.
+**What's live vs. precomputed:** everything is live. Every request to `/api/explain-fix`, `/api/capture-fix`, or `/api/voice-to-logic` either calls Gemini (if online) or returns a deterministic offline response.
 
 ---
 
