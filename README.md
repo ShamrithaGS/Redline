@@ -276,6 +276,6 @@ This project was built with iterative assistance from AI agents:
 
 <div align="center">
 
-*Made for iQOO Hackathon 2026 — City Battles, Chennai*
+*Made for iQOO Hackathon 2026 — City Battles*
 
 </div>
